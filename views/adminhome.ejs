@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/styles/adminhome.css"> <!-- Link to the CSS file -->
+    <title>Admin Dashboard</title>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="container">
+            <h1 class="navbar-brand">Admin Dashboard</h1>
+            <ul class="navbar-links">
+                <li><a href="#">Home</a></li>
+                <li><a href="/admin/events-post">Events Post</a></li>
+                <li><a href="/admin/achievement-verify">Achievement Verify</a></li>
+                <li><a href="/admin/registered-users">Registered Users</a></li>
+                <li><a href="/admin/adminlogout" class="logout">Logout</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="main-container">
+        <h2>Welcome, Admin!</h2>
+        <p>Use the navigation bar to manage events, verify achievements, and view registered users.</p>
+
+        <div class="cards">
+            <!-- Card for Events -->
+            <div class="card">
+                <h3>Events Post</h3>
+                <p>Post and manage upcoming events.</p>
+                <h4>upcoming</h4>
+                <a href="/admin/events-post" class="btn">Manage Events</a>
+            </div>
+            <!-- Card for Achievement Verify -->
+            <div class="card">
+                <h3>Achievement Verify</h3>
+                <p>Review and approve student achievements.</p>
+                <a href="/admin/achievement-verify" class="btn">Verify Achievements</a>
+            </div>
+            <!-- Card for Registered Users -->
+            <div class="card">
+                <h3>Registered Users</h3>
+                <p>View and manage registered users.</p>
+                <a href="/admin/registered-users" class="btn">View Users</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024 Admin Panel | All Rights Reserved.</p>
+    </footer>
+
+</body>
+</html>

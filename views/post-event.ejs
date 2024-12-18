@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/styles/adminhome.css"> 
+    <title>Post Event</title>
+    <style>
+        /* Additional styles specific to Post Event */
+        .containers {
+            max-width: 800px;
+            margin: 20px auto;
+            background: #fff;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            text-align: center;
+            font-weight: bold;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+      <!-- Navbar -->
+      <nav class="navbar">
+        <div class="container">
+            <h1 class="navbar-brand" style="color: #fff;">Admin Dashboard</h1>
+            <ul class="navbar-links">
+                <li><a href="/admin/adminhome">Home</a></li>
+                <li><a href="#">Events Post</a></li>
+                <li><a href="/admin/achievement-verify">Achievement Verify</a></li>
+                <li><a href="/admin/registered-users">Registered Users</a></li>
+                <li><a href="/admin/adminlogout" class="logout">Logout</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="containers">
+        <h1>Post Event</h1>
+        <form id="eventForm" action="/admin/events-post" method="POST">
+            <!-- Event Type -->
+            <div class="form-group">
+                <label for="eventType">Event Type</label>
+                <select id="eventType" name="eventType" required>
+                    <option value="" disabled selected>Select an event type</option>
+                    <option value="competition">Competition</option>
+                    <option value="workshop">Workshop</option>
+                    <option value="seminar">Seminar</option>
+                </select>
+            </div>
+
+            <!-- General Information -->
+            <div class="form-group">
+                <label for="eventTitle">Event Title</label>
+                <input type="text" id="eventTitle" name="eventTitle" placeholder="Enter the event title" required>
+            </div>
+
+            <div class="form-group">
+                <label for="dateTime">Date and Time</label>
+                <input type="datetime-local" id="dateTime" name="dateTime" required>
+            </div>
+
+            <div class="form-group">
+                <label for="location">Block and Room (or Online)</label>
+                <input type="text" id="location" name="location" placeholder="e.g., Block A, Room 101 or Online" required>
+            </div>
+
+            <div class="form-group">
+                <label for="coordinatorName">Coordinator Name</label>
+                <input type="text" id="coordinatorName" name="coordinatorName" placeholder="Enter coordinator's name" required>
+            </div>
+
+            <div class="form-group">
+                <label for="coordinatorContact">Coordinator Contact Number</label>
+                <input type="tel" id="coordinatorContact" name="coordinatorContact" placeholder="Enter contact number" required>
+            </div>
+
+            <!-- Competition Specific Fields -->
+            <div id="competitionFields" class="hidden">
+                <div class="form-group">
+                    <label for="competitionName">Competition Name</label>
+                    <input type="text" id="competitionName" name="competitionName" placeholder="Enter competition name">
+                </div>
+                <div class="form-group">
+                    <label for="teamSize">Team Size</label>
+                    <input type="number" id="teamSize" name="teamSize" placeholder="Enter maximum team size">
+                </div>
+                <div class="form-group">
+                    <label for="competitionDescription">Event Description</label>
+                    <textarea id="competitionDescription" name="competitionDescription" placeholder="Provide a brief description of the event"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="roundsDescription">Round-wise Description</label>
+                    <textarea id="roundsDescription" name="roundsDescription" placeholder="Describe the rounds of the competition"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="eventRules">Event Rules</label>
+                    <textarea id="eventRules" name="eventRules" placeholder="List the rules of the competition"></textarea>
+                </div>
+            </div>
+
+            <!-- Workshop/Seminar Specific Fields -->
+            <div id="workshopSeminarFields" class="hidden">
+                <div class="form-group">
+                    <label for="speakerName">Speaker/Instructor Name</label>
+                    <input type="text" id="speakerName" name="speakerName" placeholder="Enter name of the speaker/instructor">
+                </div>
+                <div class="form-group">
+                    <label for="workshopSeminarDescription">Description</label>
+                    <textarea id="workshopSeminarDescription" name="workshopSeminarDescription" placeholder="Provide a description"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="additionalDetails">Additional Details</label>
+                    <textarea id="additionalDetails" name="additionalDetails" placeholder="Include any additional details"></textarea>
+                </div>
+            </div>
+
+            <button type="submit" class="btn">Post Event</button>
+        </form>
+    </div>
+
+    <script>
+        // Script to toggle fields based on event type
+        const eventTypeField = document.getElementById('eventType');
+        const competitionFields = document.getElementById('competitionFields');
+        const workshopSeminarFields = document.getElementById('workshopSeminarFields');
+
+        eventTypeField.addEventListener('change', function() {
+            competitionFields.classList.add('hidden');
+            workshopSeminarFields.classList.add('hidden');
+
+            if (this.value === 'competition') {
+                competitionFields.classList.remove('hidden');
+            } else if (this.value === 'workshop' || this.value === 'seminar') {
+                workshopSeminarFields.classList.remove('hidden');
+            }
+        });
+    </script>
+</body>
+</html>

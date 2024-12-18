@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/responsive.css">
+    <title>Contact-CAA</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+            color: #333;
+        }
+
+        .contact {
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .contact h2 {
+            color: #0044cc;
+            margin-bottom: 1rem;
+        }
+
+        .contact-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 2rem;
+        }
+
+        .contactInfo, .contactForm {
+            flex: 1;
+            min-width: 300px;
+            max-width: 500px;
+            background: #fff;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .contactInfo .box {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .contactInfo .icon {
+            color: #0044cc;
+            font-size: 24px;
+            margin-right: 1rem;
+        }
+
+        .contactInfo .text h3 {
+            margin: 0;
+            font-size: 18px;
+        }
+
+        .contactInfo .text p {
+            margin: 0.2rem 0 0;
+            font-size: 16px;
+        }
+
+        iframe {
+            width: 100%;
+            height: 300px;
+            border: none;
+            margin: 2rem 0;
+        }
+
+        footer {
+            background: #0044cc;
+            color: #fff;
+            text-align: center;
+            padding: 1rem 0;
+        }
+
+        footer a {
+            color: #ffd700;
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+        .contact-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 2rem;
+}
+
+.contactInfo, .facultyDetails {
+    flex: 1;
+    min-width: 45%; /* Adjust width for responsiveness */
+    background: #fff;
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+    </style>
+</head>
+<body>
+    
+
+   <!-- header section starts  -->
+   <header class="header">
+
+    <a href="index.html" class="logo">
+       <img src="/Image/psgLogo.png" alt="college logo" style="width: 150px; height: 150px;" />
+       <div class="collage-name">DEPARTMENT OF CAA</div>
+    </a>
+ 
+    <nav class="navbar">
+        <div id="close-navbar" class="close-icon"><img src="/Image/close-icon.gif" width="50" /></div>
+
+        <ul class="navbar-links">
+            <li class="navbar-dropdown">
+              <a href="/">Home</a>
+            </li>
+            <li class="navbar-dropdown">
+                <a href="/allEvents">Events</a>
+            </li>
+            <li class="navbar-dropdown">
+                <a href="/achievements">Student Achievements</a>
+            </li>
+            <li class="navbar-dropdown">
+                <a href="/contact">Contact Us</a>
+            </li>
+        </ul>
+    </nav>
+
+    <div class="icons">
+       <div id="account-btn" class="header-icon"><img src="/Image/avatar-icon.svg" alt="user-icon" />
+        <a href="/admin/adminlogin">
+         <img src="/Image/avatar-icon-hover.gif" alt="user-icon" width="10" class="header-icon-hover" /></a>
+       </div>
+    </div>
+ 
+ </header>
+
+ <section class="contact">
+    <div class="contact-container">
+        <!-- Contact Details on Left -->
+        <div class="contactInfo">
+            <h2>Contact Us</h2>
+            <div class="box">
+                <div class="icon"><i class="fa-solid fa-location-dot"></i></div>
+                <div class="text">
+                    <h3>Address</h3>
+                    <p>Post Box No. 1611</p>
+                    <p>Peelamedu</p>
+                    <p>Coimbatore-641004</p>
+                </div>
+            </div>
+            <div class="box">
+                <div class="icon"><i class="fa-solid fa-phone"></i></div>
+                <div class="text">
+                    <h3>Phone</h3>
+                    <p>0422-2572177,2572477,4344777</p>
+                </div>
+            </div>
+            <div class="box">
+                <div class="icon"><i class="fa-solid fa-envelope"></i></div>
+                <div class="text">
+                    <h3>Email</h3>
+                    <p>caa@psgtech.ac.in</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Faculty Details on Right -->
+        <div class="facultyDetails">
+            <h2>CAA</h2>
+            <div class="box">
+                <h3>Faculty Advisor</h3>
+                <p>Dr.Bhama Phone No:12345567</p>
+            </div>
+            <div class="box">
+                <h3>Association Secretary</h3>
+                <p>Kavin Phone No:1234567789</p>
+                
+            </div>
+            <div class="box">
+                <h3>Treasurer</h3>
+                <p>Reethika Phone No:1234567789</p>
+            </div>
+            <div class="box">
+                <h3>Placement Representative</h3>
+                <p>Rahul Phone No:1234567789</p>
+            </div>
+        </div>
+    </div>
+    <!-- Google Map below the two containers -->
+    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3916.191429396055!2d77.00024787400267!3d11.024259654575618!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ba8582f1435fa59%3A0x137d95bfd8909293!2sPSG%20College%20Of%20Technology!5e0!3m2!1sen!2sin!4v1733811048310!5m2!1sen!2sin" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+</section>
+
+    <footer>
+        <p>&copy; 2024 Computer  Application Department | <a href="#">Privacy Policy</a></p>
+    </footer>
+</body>
+</html>

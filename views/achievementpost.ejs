@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Achievement Upload Page</title>
+    <style>
+        /* General Styles */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+        
+        /* Container */
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Header */
+        .container__header {
+            text-align: center;
+            font-size: 2rem;
+            color: #444;
+        }
+
+        /* Form Styles */
+        .achievement-form {
+            margin-top: 20px;
+        }
+
+        .achievement-form__input, 
+        .achievement-form__textarea, 
+        .achievement-form__button, 
+        .achievement-form__select {
+            width: 98%;
+            padding: 12px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+
+        .achievement-form__textarea {
+            resize: vertical;
+        }
+
+        .achievement-form__button {
+            background-color: #007BFF;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .achievement-form__button:hover {
+            background-color: #0056b3;
+        }
+
+        .error-message {
+            color: red;
+            font-size: 0.9rem;
+            margin-top: -10px;
+            margin-bottom: 10px;
+            display: none;
+        }
+
+        /* Group Member Details */
+        .group-members {
+            display: none;
+            margin-top: 15px;
+            padding: 10px;
+            background-color: #e9f7f6;
+            border-radius: 4px;
+        }
+
+        .group-member {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .group-member__input {
+            flex: 1;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="container__header">Achievement Upload</h1>
+        <div class="achievement-form">
+            <form  id="achievementForm" action="/achievements/upload" method="POST" enctype="multipart/form-data">
+
+            
+                <label>Achievement Title:</label><br>
+                <input class="achievement-form__input" type="text" id="title" name="title" placeholder="Enter Achievement Title" required>
+                <div class="error-message" id="titleError">Title cannot be empty.</div>
+                <label>Achievement Date:</label><br>
+                <input class="achievement-form__input" type="date" id="date" name="date" required>
+                <div class="error-message" id="dateError">Choose a date from past.</div>
+                <br>
+                <label>Achievement Type:</label><br>
+                <div class="achievement-form__radio-group">
+                    <label>
+                        <input type="radio" id="typeAcademic" name="type" value="academic" required> Academic
+                    </label>
+                    <label>
+                        <input type="radio" id="typeNonAcademic" name="type" value="nonacademic" required> Non-Academic
+                    </label>
+                </div>
+                <br>
+                <div class="error-message" id="typeError">Please select a type.</div>
+                <label>Achievement Category:</label><br>
+                <select class="achievement-form__select" id="category" name="category" required>
+                    <option value="">Select Category</option>
+                    <option value="sports">Sports</option>
+                    <option value="exam">Exam</option>
+                    <option value="project">Project</option>
+                    <option value="research">Research</option>
+                    <option value="publication">Publication</option>
+                    <option value="culturals">Culturals</option>
+                    <option value="leadership">Leadership</option>
+                    <option value="volunteer">Volunteer</option>
+                </select>
+                <div class="error-message" id="categoryError">Please select a category.</div>
+                <label>Achievement Level:</label><br>
+                <select class="achievement-form__select" id="level" name="level" required>
+                    <option value="">Select Level</option>
+                    <option value="intercollegiate">Intercollegiate</option>
+                    <option value="intracollegiate">Intracollegiate</option>
+                    <option value="zonal">Zonal</option>
+                    <option value="district">District</option>
+                    <option value="state">State</option>
+                    <option value="national">National</option>
+                    <option value="international">International</option>
+                </select>
+                <div class="error-message" id="levelError">Please select a level.</div>
+                <label>Reward:</label><br>
+                <input class="achievement-form__input" type="text" id="reward" name="reward" placeholder="Enter Reward Details" required>
+                <div class="error-message" id="rewardError">Reward cannot be empty.</div>
+
+                <label>
+                    <input type="checkbox" id="isGroupAchievement"> Is this a group achievement?
+                </label>
+                <br>
+                <div class="group-members" id="groupMembers">
+                    <h3>Group Member Details</h3>
+                    <div id="groupMembersList"></div>
+                    <button type="button" id="addMember" class="achievement-form__button">Add Member</button>
+                </div>
+
+                <textarea class="achievement-form__textarea" id="description" name="description" placeholder="Enter Achievement Description" rows="4" required></textarea>
+                <div class="error-message" id="descriptionError">Description cannot be empty.</div>
+
+                <input class="achievement-form__input" type="file" id="image" name="image" accept="image/*" required>
+                <div class="error-message" id="imageError">Please upload an image.</div>
+                <br><br>
+                <button class="achievement-form__button" type="submit">Upload Achievement</button>
+            </form>
+         
+        </div>
+    </div>
+    <script>
+        // Validation functions
+        function validateTitle() {
+            const title = document.getElementById('title').value.trim();
+            const error = document.getElementById('titleError');
+            if (!title) {
+                error.style.display = 'block';
+                return false;
+            } else {
+                error.style.display = 'none';
+                return true;
+            }
+        }
+
+        function validateDate() {
+            const date = document.getElementById('date').value;
+            const currentDate = new Date().toISOString().split('T')[0];
+            const error = document.getElementById('dateError');
+            if (!date || date > currentDate) {
+                error.style.display = 'block';
+                return false;
+            } else {
+                error.style.display = 'none';
+                return true;
+            }
+        }
+
+        function validateType() {
+            const typeAcademic = document.getElementById('typeAcademic').checked;
+            const typeNonAcademic = document.getElementById('typeNonAcademic').checked;
+            const error = document.getElementById('typeError');
+            if (!typeAcademic && !typeNonAcademic) {
+                error.style.display = 'block';
+                return false;
+            } else {
+                error.style.display = 'none';
+                return true;
+            }
+        }
+
+        function validateCategory() {
+            const category = document.getElementById('category').value;
+            const error = document.getElementById('categoryError');
+            if (!category) {
+                error.style.display = 'block';
+                return false;
+            } else {
+                error.style.display = 'none';
+                return true;
+            }
+        }
+
+        function validateLevel() {
+            const level = document.getElementById('level').value;
+            const error = document.getElementById('levelError');
+            if (!level) {
+                error.style.display = 'block';
+                return false;
+            } else {
+                error.style.display = 'none';
+                return true;
+            }
+        }
+
+        function validateReward() {
+            const reward = document.getElementById('reward').value.trim();
+            const error = document.getElementById('rewardError');
+            if (!reward) {
+                error.style.display = 'block';
+                return false;
+            } else {
+                error.style.display = 'none';
+                return true;
+            }
+        }
+
+        function validateDescription() {
+            const description = document.getElementById('description').value.trim();
+            const error = document.getElementById('descriptionError');
+            if (!description) {
+                error.style.display = 'block';
+                return false;
+            } else {
+                error.style.display = 'none';
+                return true;
+            }
+        }
+
+        function validateImage() {
+            const image = document.getElementById('image').files.length;
+            const error = document.getElementById('imageError');
+            if (image === 0) {
+                error.style.display = 'block';
+                return false;
+            } else {
+                error.style.display = 'none';
+                return true;
+            }
+        }
+
+        function validateGroupMembers() {
+            const isGroup = document.getElementById('isGroupAchievement').checked;
+            const groupMembers = document.querySelectorAll('.group-member');
+            let isValid = true;
+
+            if (isGroup && groupMembers.length === 0) {
+                alert('Add at least one group member.');
+                return false;
+            }
+
+            groupMembers.forEach(member => {
+                const name = member.querySelector('.group-member__input[name="memberName"]').value.trim();
+                const rollNo = member.querySelector('.group-member__input[name="memberRollNo"]').value.trim();
+
+                if (!name || !rollNo) {
+                    isValid = false;
+                }
+            });
+
+            if (!isValid) {
+                alert('Fill out all group member details.');
+            }
+
+            return isValid;
+        }
+
+        // Event listeners for validation
+        document.getElementById('title').addEventListener('blur', validateTitle);
+        document.getElementById('date').addEventListener('blur', validateDate);
+        document.getElementsByName('type').forEach(radio => radio.addEventListener('change', validateType));
+        document.getElementById('category').addEventListener('change', validateCategory);
+        document.getElementById('level').addEventListener('change', validateLevel);
+        document.getElementById('reward').addEventListener('blur', validateReward);
+        document.getElementById('description').addEventListener('blur', validateDescription);
+        document.getElementById('image').addEventListener('blur', validateImage);
+
+        // Group member logic
+        const groupCheckbox = document.getElementById('isGroupAchievement');
+        const groupMembersContainer = document.getElementById('groupMembers');
+        const groupMembersList = document.getElementById('groupMembersList');
+
+        groupCheckbox.addEventListener('change', function () {
+            groupMembersContainer.style.display = this.checked ? 'block' : 'none';
+        });
+
+        document.getElementById('addMember').addEventListener('click', function () {
+            const memberDiv = document.createElement('div');
+            memberDiv.classList.add('group-member');
+
+            memberDiv.innerHTML = `
+                <input class="group-member__input" type="text" name="memberName" placeholder="Member Name" required>
+                <input class="group-member__input" type="text" name="memberRollNo" placeholder="Member Roll No" required>
+                <button type="button" class="removeMember">Remove</button>
+            `;
+
+            groupMembersList.appendChild(memberDiv);
+
+            memberDiv.querySelector('.removeMember').addEventListener('click', function () {
+                memberDiv.remove();
+            });
+        });
+
+        // Final form submission validation
+        document.getElementById('achievementForm').addEventListener('submit', function (event) {
+            if (
+                !validateTitle() ||
+                !validateDate() ||
+                !validateType() ||
+                !validateCategory() ||
+                !validateLevel() ||
+                !validateReward() ||
+                !validateDescription() ||
+                !validateImage() ||
+                !validateGroupMembers()
+            ) {
+                event.preventDefault();
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,87 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/styles/adminRU.css">
+    <title>Registered Users</title>
+</head>
+<body>
+    
+    <nav class="navbar">
+        <div class="container">
+            <h1 class="navbar-brand">Admin Dashboard</h1>
+            <ul class="navbar-links">
+                <li><a href="/admin/adminhome">Home</a></li>
+                <li><a href="/admin/events-post">Events Post</a></li>
+                <li><a href="/admin/achievement-verify">Achievement Verify</a></li>
+                <li><a href="/admin/registered-users">Registered Users</a></li>
+                <li><a href="/admin/adminlogout" class="logout">Logout</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="main-container">
+        <h2>Registered Users</h2>
+
+        <!-- Filter Section -->
+        <form id="filter-form" method="GET" action="/admin/registered-users">
+            <label for="eventName">Event Name:</label>
+            <select id="eventName" name="eventName">
+                <option value="">-- Select an Event --</option>
+                <% events.forEach(event => { %>
+                    <option value="<%= event.eventTitle %>"><%= event.eventTitle %></option>
+                <% }) %>
+            </select>
+
+            <label for="eventDate">Event Date:</label>
+            <input type="date" id="eventDate" name="eventDate">
+
+            <button type="submit">Filter</button>
+            <a href="/admin/registered-users" class="remove-filter">Remove Filter</a>
+        </form>
+
+
+        <!-- Users Table -->
+        <table class="user-table">
+            <thead>
+                <tr>
+                    <th>Username</th>
+                    <th>Email</th>
+                    <th>Roll Number</th>
+                    <th>Mobile</th>
+                    <th>Course</th>
+                    <th>College</th>
+                    <th>Registered At</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% if (users && users.length > 0) { %>
+                    <% users.forEach(user => { %>
+                        <tr>
+                            <td><%= user.username %></td>
+                            <td><%= user.email %></td>
+                            <td><%= user.rollnumber %></td>
+                            <td><%= user.mobile %></td>
+                            <td><%= user.course %></td>
+                            <td><%= user.college %></td>
+                            <td><%= new Date(user.createdAt).toLocaleString() %></td>
+                        </tr>
+                    <% }) %>
+                <% } else { %>
+                    <tr>
+                        <td colspan="7">No registered users found.</td>
+                    </tr>
+                <% } %>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024 Admin Panel | All Rights Reserved.</p>
+    </footer>
+</body>
+</html>

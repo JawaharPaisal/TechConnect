@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Events</title>
+    <link rel="stylesheet" href="/styles/eventStyle.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/responsive.css">
+</head>
+<body>
+    <header class="header">
+
+        <a class="logo">
+           <img src="/Image/psgLogo.png" alt="college logo" style="width: 150px; height: 150px;" />
+           <div class="collage-name">DEPARTMENT OF CAA</div>
+        </a>
+     
+        <nav class="navbar">
+            <div id="close-navbar" class="close-icon"><img src="/Image/close-icon.gif" width="50" /></div>
+  
+            <ul class="navbar-links">
+                <li class="navbar-dropdown">
+                  <a href="/">Home</a>
+                </li>
+                <li class="navbar-dropdown">
+                    <a href="/allEvents">Events</a>
+                </li>
+                <li class="navbar-dropdown">
+                    <a href="/achievements">Student Achievements</a>
+                </li>
+                <li class="navbar-dropdown">
+                    <a href="/contact">Contact Us</a>
+                </li>
+            </ul>
+        </nav>
+  
+        <div class="icons">
+           <div id="account-btn" class="header-icon"><img src="/Image/avatar-icon.svg" alt="user-icon" />
+            <a href="/admin/adminlogin">
+             <img src="/Image/avatar-icon-hover.gif" alt="user-icon" width="10" class="header-icon-hover" /></a>
+           </div>
+        </div>
+     
+     </header>
+    <h1>Event List</h1>
+    <div class="container">
+        <!-- Expired Events -->
+        <div class="left">
+            <h2>Expired Events</h2>
+            <% if (expiredEvents && expiredEvents.length > 0) { %>
+                <% expiredEvents.forEach(event => { %>
+                    <div class="event expired" data-event='<%= JSON.stringify(event) %>'>
+                        <h2><%= event.eventTitle %></h2>
+                        <p>Type: <%= event.eventType %></p>
+                        <p>Date: <%= new Date(event.dateTime).toLocaleDateString() %></p>
+                        <p>Location: <%= event.location %></p>
+                        <p>Coordinator: <%= event.coordinatorName %> (<%= event.coordinatorContact %>)</p>
+                    </div>
+                <% }) %>
+            <% } else { %>
+                <p>No expired events.</p>
+            <% } %>
+        </div>
+
+        <!-- Upcoming Events -->
+        <div class="right">
+            <h2>Upcoming Events</h2>
+            <% if (upcomingEvents && upcomingEvents.length > 0) { %>
+                <% upcomingEvents.forEach(event => { %>
+                    <div class="event upcoming" data-event='<%= JSON.stringify(event) %>'>
+                        <h2><%= event.eventTitle %></h2>
+                        <p>Type: <%= event.eventType %></p>
+                        <p>Date: <%= new Date(event.dateTime).toLocaleDateString() %></p>
+                        <p>Location: <%= event.location %></p>
+                        <p>Coordinator: <%= event.coordinatorName %> (<%= event.coordinatorContact %>)</p>
+                        <button class="register-button" id="addeventBtn">Register</button>
+                    </div>
+                <% }) %>
+            <% } else { %>
+                <p>No upcoming events.</p>
+            <% } %>
+        </div>
+    </div>
+
+    <!-- Modal for Event Details -->
+    <div class="backdrop" id="backdrop"></div>
+    <div class="modal" id="eventModal">
+        <div class="modal-header">
+            <h2 id="modalTitle">Event Details</h2>
+            <button class="modal-close" id="closeModal">&times;</button>
+        </div>
+        <div class="modal-body" id="modalBody">
+            <!-- Details will be populated dynamically -->
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const modal = document.getElementById('eventModal');
+            const backdrop = document.getElementById('backdrop');
+            const closeModal = document.getElementById('closeModal');
+            const modalBody = document.getElementById('modalBody');
+
+            // Event listener for event containers
+            document.querySelectorAll('.event').forEach(eventDiv => {
+                eventDiv.addEventListener('click', (e) => {
+                    if (!e.target.classList.contains('register-button')) {
+                        const eventDetails = JSON.parse(eventDiv.dataset.event);
+                        displayModal(eventDetails);
+                    }
+                });
+            });
+
+            // Display modal with event details
+            function displayModal(eventDetails) {
+                let detailsHTML = `
+                    <p>Type: ${eventDetails.eventType}</p>
+                    <p>Date: ${new Date(eventDetails.dateTime).toLocaleDateString()}</p>
+                    <p>Location: ${eventDetails.location}</p>
+                    <p>Coordinator: ${eventDetails.coordinatorName} (${eventDetails.coordinatorContact})</p>
+                `;
+
+                if (eventDetails.eventType === 'competition' && eventDetails.competitionDetails) {
+                    detailsHTML += `
+                        <h3>Competition Details:</h3>
+                        <p>Name: ${eventDetails.competitionDetails.competitionName}</p>
+                        <p>Team Size: ${eventDetails.competitionDetails.teamSize}</p>
+                        <p>Description: ${eventDetails.competitionDetails.competitionDescription}</p>
+                        <p>Rounds: ${eventDetails.competitionDetails.roundsDescription}</p>
+                        <p>Rules: ${eventDetails.competitionDetails.eventRules}</p>
+                    `;
+                } else if ((eventDetails.eventType === 'workshop' || eventDetails.eventType === 'seminar') && eventDetails.workshopSeminarDetails) {
+                    detailsHTML += `
+                        <h3>Workshop/Seminar Details:</h3>
+                        <p>Speaker: ${eventDetails.workshopSeminarDetails.speakerName}</p>
+                        <p>Description: ${eventDetails.workshopSeminarDetails.workshopSeminarDescription}</p>
+                        <p>Additional Details: ${eventDetails.workshopSeminarDetails.additionalDetails}</p>
+                    `;
+                }
+
+                modalBody.innerHTML = detailsHTML;
+                modal.classList.add('show');
+                backdrop.classList.add('show');
+            }
+
+            // Close modal functionality
+            closeModal.addEventListener('click', () => {
+                modal.classList.remove('show');
+                backdrop.classList.remove('show');
+            });
+
+            backdrop.addEventListener('click', () => {
+                modal.classList.remove('show');
+                backdrop.classList.remove('show');
+            });
+        });
+        document.querySelectorAll('.register-button').forEach(button => {
+    button.addEventListener('click', async (e) => {
+        e.stopPropagation();
+
+        const eventDiv = e.target.closest('.event');
+        const eventDetails = JSON.parse(eventDiv.dataset.event);
+
+        // Check if the user is logged in by checking for a valid token in cookies
+        const token = document.cookie.split(';').find(cookie => cookie.trim().startsWith('token='));
+        if (!token) {
+            alert("Please login to proceed!");
+            window.location.href = "/login";  // Redirect to login page
+            return;
+        }
+
+        const payload = {
+            userId: getUserIdFromToken(token),  // Replace this function with your implementation
+            eventId: eventDetails._id,
+            teamMembers: []
+        };
+
+        if (eventDetails.eventType === 'competition' && eventDetails.competitionDetails.teamSize > 1) {
+            payload.teamMembers = await collectTeamMembers(eventDetails.competitionDetails.teamSize - 1);
+            if (!payload.teamMembers) return;  // Exit if team members are not filled
+        }
+
+        try {
+            const response = await fetch('/api/register', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token.split('=')[1]}`  // Add token to headers
+                },
+                body: JSON.stringify(payload)
+            });
+
+            if (response.ok) {
+                alert('Registered successfully!');
+            } else {
+                const error = await response.json();
+                alert(`Error: ${error.message}`);
+            }
+        } catch (error) {
+            console.error(error);
+            alert('Failed to register. Please try again.');
+        }
+    });
+});
+
+async function collectTeamMembers(teamSize) {
+    return new Promise((resolve) => {
+        let teamMembers = [];
+
+        for (let i = 0; i < teamSize; i++) {
+            const name = prompt(`Enter name for team member ${i + 1}`);
+            const rollnumber = prompt(`Enter roll number for team member ${i + 1}`);
+            const mobile = prompt(`Enter mobile for team member ${i + 1}`);
+            if (!name || !rollnumber || !mobile) {
+                alert('Please fill all team member details');
+                resolve(null);
+                return;
+            }
+            teamMembers.push({ name, rollnumber, mobile });
+        }
+
+        resolve(teamMembers);
+    });
+}
+
+function getUserIdFromToken(token) {
+    // Replace this with actual logic to decode the token and extract user ID
+    const payload = JSON.parse(atob(token.split('.')[1]));
+    return payload.userId;
+}
+
+    </script>
+</body>
+</html>
